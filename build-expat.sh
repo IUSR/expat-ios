@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#  Automatic build script for expat 
+#  Automatic build script for expat
 #  for iPhoneOS and iPhoneSimulator
 #
 #  Created by Felix Schulze on 19.02.12.
@@ -21,8 +21,8 @@
 ###########################################################################
 #  Change values here													  #
 #																		  #
-VERSION="2.0.1"													      #
-SDKVERSION="5.0"														  #
+VERSION=${VERSION:="2.0.1"}													      #
+SDKVERSION=${SDKVERSION:="5.0"}														  #
 #																		  #
 ###########################################################################
 #																		  #
@@ -38,7 +38,7 @@ DEVELOPER=`xcode-select -print-path`
 set -e
 if [ ! -e expat-${VERSION}.tar.gz ]; then
 	echo "Downloading expat-${VERSION}.tar.gz"
-    curl -O http://ncu.dl.sourceforge.net/project/expat/expat/2.0.1/expat-${VERSION}.tar.gz
+    curl -O http://ncu.dl.sourceforge.net/project/expat/expat/${VERSION}/expat-${VERSION}.tar.gz
 else
 	echo "Using expat-${VERSION}.tar.gz"
 fi
@@ -58,10 +58,10 @@ do
 	else
 		PLATFORM="iPhoneOS"
 	fi
-	
+
 	echo "Building expat-${VERSION} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
 	echo "Please stand by..."
-	
+
 	export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
 	export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDKVERSION}.sdk"
 
