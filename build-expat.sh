@@ -19,15 +19,15 @@
 #  limitations under the License.
 #
 ###########################################################################
-#  Change values here													  #
-#																		  #
-VERSION=${VERSION:="2.1.0"}													      #
-SDKVERSION=${SDKVERSION:="6.1"}														  #
-#																		  #
+#  Change values here                                                     #
+#                                                                         #
+VERSION=${VERSION:="2.1.0"}                                               #
+SDKVERSION=${SDKVERSION:="6.1"}                                           #
+#                                                                         #
 ###########################################################################
-#																		  #
-# Don't change anything under this line!								  #
-#																		  #
+#                                                                         #
+# Don't change anything under this line!                                  #
+#                                                                         #
 ###########################################################################
 
 
@@ -37,10 +37,10 @@ DEVELOPER=`xcode-select -print-path`
 
 set -e
 if [ ! -e expat-${VERSION}.tar.gz ]; then
-	echo "Downloading expat-${VERSION}.tar.gz"
+    echo "Downloading expat-${VERSION}.tar.gz"
     curl -O http://ncu.dl.sourceforge.net/project/expat/expat/${VERSION}/expat-${VERSION}.tar.gz
 else
-	echo "Using expat-${VERSION}.tar.gz"
+    echo "Using expat-${VERSION}.tar.gz"
 fi
 
 mkdir -p "${CURRENTPATH}/src"
@@ -49,43 +49,43 @@ mkdir -p "${CURRENTPATH}/lib"
 
 for ARCH in ${ARCHS}
 do
-	tar zxf expat-${VERSION}.tar.gz -C "${CURRENTPATH}/src"
-	cd "${CURRENTPATH}/src/expat-${VERSION}"
+    tar zxf expat-${VERSION}.tar.gz -C "${CURRENTPATH}/src"
+    cd "${CURRENTPATH}/src/expat-${VERSION}"
 
-	if [ "${ARCH}" == "i386" ];
-	then
-		PLATFORM="iPhoneSimulator"
-	else
-		PLATFORM="iPhoneOS"
-	fi
+    if [ "${ARCH}" == "i386" ];
+    then
+        PLATFORM="iPhoneSimulator"
+    else
+        PLATFORM="iPhoneOS"
+    fi
 
-	echo "Building expat-${VERSION} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
-	echo "Please stand by..."
+    echo "Building expat-${VERSION} for ${PLATFORM} ${SDKVERSION} ${ARCH}"
+    echo "Please stand by..."
 
-	export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
-	export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDKVERSION}.sdk"
+    export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
+    export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDKVERSION}.sdk"
 
-	export CC=${DEVROOT}/usr/bin/gcc
-	export LD=${DEVROOT}/usr/bin/ld
-	export CPP=${DEVROOT}/usr/bin/llvm-cpp-4.2
-	export CXX=${DEVROOT}/usr/bin/g++
-	unset AR
-	unset AS
-	export NM=${DEVROOT}/usr/bin/nm
-	export CXXCPP=$DEVROOT/usr/bin/llvm-cpp-4.2
-	export RANLIB=$DEVROOT/usr/bin/ranlib
-	export LDFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -L${CURRENTPATH}/lib"
-	export CFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${CURRENTPATH}/include"
-	export CXXFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${CURRENTPATH}/include"
+    export CC=${DEVROOT}/usr/bin/gcc
+    export LD=${DEVROOT}/usr/bin/ld
+    export CPP=${DEVROOT}/usr/bin/llvm-cpp-4.2
+    export CXX=${DEVROOT}/usr/bin/g++
+    unset AR
+    unset AS
+    export NM=${DEVROOT}/usr/bin/nm
+    export CXXCPP=$DEVROOT/usr/bin/llvm-cpp-4.2
+    export RANLIB=$DEVROOT/usr/bin/ranlib
+    export LDFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -L${CURRENTPATH}/lib"
+    export CFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${CURRENTPATH}/include"
+    export CXXFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${CURRENTPATH}/include"
 
-	mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk"
-	LOG="${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk/build-expat-${VERSION}.log"
+    mkdir -p "${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk"
+    LOG="${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk/build-expat-${VERSION}.log"
 
-	./configure --prefix="${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk" --host="${ARCH}-apple-darwin" --enable-static > "${LOG}" 2>&1
-	make >> "${LOG}" 2>&1
-	make install >> "${LOG}" 2>&1
-	cd "${CURRENTPATH}"
-	rm -rf "${CURRENTPATH}/src/expat-${VERSION}"
+    ./configure --prefix="${CURRENTPATH}/bin/${PLATFORM}${SDKVERSION}-${ARCH}.sdk" --host="${ARCH}-apple-darwin" --enable-static > "${LOG}" 2>&1
+    make >> "${LOG}" 2>&1
+    make install >> "${LOG}" 2>&1
+    cd "${CURRENTPATH}"
+    rm -rf "${CURRENTPATH}/src/expat-${VERSION}"
 done
 
 echo "Build library..."
